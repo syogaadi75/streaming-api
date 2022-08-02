@@ -12,8 +12,8 @@ const filmsRoute = require('./routes/films')
 const episodeRoute = require('./routes/episode')
 const authRoute = require('./routes/auth')
 
-app.use('/films', verifyToken, filmsRoute)
-app.use('/episode', verifyToken, episodeRoute)
+app.use('/films', filmsRoute)
+app.use('/episode', episodeRoute)
 app.use('/auth', authRoute)
 
 // Route

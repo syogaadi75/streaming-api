@@ -10,19 +10,19 @@ router.get('/:filmId', async (req, res) => {
     try {
         var film = await Film.findById(req.params.filmId)
         var data = await Episode.find({id_film: req.params.filmId})
-        res.json({
+        res.send({
             film: film,
             episodes: data
         })
     } catch (error) {
-        res.json({message: error})
+        res.send({message: error})
     }
 })
 
 router.post('/:filmId', upload.fields([{name: 'video', maxCount: 1}]), async (req, res) => {
     try {
         if(Object.keys(req.files).length === 0) {
-            res.json({message: 'File video dibutuhkan'})
+            res.send({message: 'File video dibutuhkan'})
             return false
         } 
 
@@ -33,9 +33,9 @@ router.post('/:filmId', upload.fields([{name: 'video', maxCount: 1}]), async (re
         })
 
         const savedEpisode = await eps.save()
-        res.json(savedEpisode)
+        res.send(savedEpisode)
     } catch (error) {
-        res.json({message: error})
+        res.send({message: error})
     }
 })
 
@@ -47,9 +47,9 @@ router.delete('/:episodeId', async (req, res) => {
         }
 
         const removedEpisode = await episode.remove()
-        res.json(removedEpisode)
+        res.send(removedEpisode)
     } catch (error) {
-        res.json({message: error})
+        res.send({message: error})
     }
 })
 

@@ -8,10 +8,10 @@ const verifyToken = require('../middleware/verifyToken')
 router.get('/me', verifyToken, async (req, res) => {
     try {
         const userData = await User.findById(req.userId, {password: false})
-        res.json(userData)
+        res.send(userData)
 
     } catch (error) {
-        res.json({message: error})
+        res.send({message: error})
     }
 })
 
@@ -25,31 +25,31 @@ router.post('/register', async (req, res) => {
             password: hashPassword,
         })
         var token = await jwt.sign({id: userData._id}, process.env.SECRET, {expiresIn: 86400})
-        res.json({auth: true, token: token})
+        res.send({auth: true, token: token})
     } catch (error) {
-        res.json(error)
+        res.send(error)
     }
 })
 
 router.post('/login', async (req, res) => {
     try {
         const userData = await User.findOne({email: req.body.email})
-        if(!userData) return res.json({message: 'Email tidak ditemukan'})
+        if(!userData) return res.send({message: 'Email tidak ditemukan'})
 
         const verifyPassword = await bcrypt.compareSync(req.body.password, userData.password)
-        if(!verifyPassword) return res.json({message: 'Password salah'})
+        if(!verifyPassword) return res.send({message: 'Password salah'})
         const token = await jwt.sign({id: userData._id}, process.env.SECRET, {expiresIn: 86400})
-        res.json({auth: true, token: token})
+        res.send({auth: true, token: token})
     } catch (error) {
-        res.json({message: error})
+        res.send({message: error})
     }
 })
 
 router.get('/logout', async (req, res) => {
     try {
-        res.json({auth: false, token: null})
+        res.send({auth: false, token: null})
     } catch (error) {
-        res.json({message: error})
+        res.send({message: error})
     }
 })
 

@@ -9,9 +9,9 @@ const multer = require('multer')
 router.get('/', async (req, res) => {
     try {
         const films = await Film.find()
-        res.json(films)
+        res.send(films)
     } catch (error) {
-        res.json({message: error})
+        res.send({message: error})
     }
 })
 
@@ -19,9 +19,9 @@ router.get('/', async (req, res) => {
 router.get('/:filmId', async (req, res) => {
     try {
         const specificFilm = await Film.findById(req.params.filmId)
-        res.json(specificFilm)
+        res.send(specificFilm)
     } catch(error) {
-        res.json({ message: error })
+        res.send({ message: error })
     }
 })
 
@@ -29,7 +29,7 @@ router.get('/:filmId', async (req, res) => {
 router.post('/', upload.fields([{ name: 'poster', maxCount: 1 }]),
     async (req, res) => { 
         if (Object.keys(req.files).length === 0) {
-            res.json({message: "File poster diperlukan"});
+            res.send({message: "File poster diperlukan"});
             return false;
         } 
         
@@ -42,9 +42,9 @@ router.post('/', upload.fields([{ name: 'poster', maxCount: 1 }]),
 
         try {
             const savedFilm = await film.save()
-            res.json(savedFilm)
+            res.send(savedFilm)
         } catch(error) {
-            res.json({ message: error })
+            res.send({ message: error })
         }  
     }
 )
@@ -68,9 +68,9 @@ router.put('/:filmId', upload.fields([{ name: 'poster', maxCount: 1 }]),
                 {_id: req.params.filmId}, 
                 {$set: data}
             )
-            res.json(updatedFilm)
+            res.send(updatedFilm)
         } catch (error) {
-            res.json({message: error})
+            res.send({message: error})
         }
     }
 )
@@ -85,9 +85,9 @@ router.delete('/:filmId', async (req, res) => {
         }
         
         const filmRemoved = await film.remove()
-        res.json({message: filmRemoved})
+        res.send({message: filmRemoved})
     } catch (error) {
-        res.json({message: error.message})
+        res.send({message: error.message})
     }
 })
 

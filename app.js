@@ -12,11 +12,10 @@ const filmsRoute = require('./routes/films')
 const episodeRoute = require('./routes/episode')
 const authRoute = require('./routes/auth')
 
+// Route
 app.use('/films', verifyToken, filmsRoute)
 app.use('/episode', verifyToken, episodeRoute)
 app.use('/auth', authRoute)
-
-// Route
 app.get('/', (req, res) => {
     res.send('Ouiiii')
 }) 

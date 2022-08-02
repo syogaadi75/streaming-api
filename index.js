@@ -27,4 +27,6 @@ mongoose.connect(process.env.DB_CONNECTION,() => {
 })
 
 // Start Server
-app.listen(3000)
+app.listen(process.env.PORT || 3000, function() {
+    console.log('Express server listening on port %d',  this.address().port)
+})

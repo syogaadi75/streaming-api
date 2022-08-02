@@ -3,7 +3,6 @@ const router = express.Router()
 const User = require('../models/User')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
-const config = require('../config')
 const verifyToken = require('../middleware/verifyToken')
 
 router.get('/me', verifyToken, async (req, res) => {
@@ -25,7 +24,7 @@ router.post('/register', async (req, res) => {
             email: req.body.email,
             password: hashPassword,
         })
-        var token = await jwt.sign({id: userData._id}, config.secret, {expiresIn: 86400})
+        var token = await jwt.sign({id: userData._id}, process.env.SECRET, {expiresIn: 86400})
         res.json({auth: true, token: token})
     } catch (error) {
         res.json(error)
@@ -39,7 +38,7 @@ router.post('/login', async (req, res) => {
 
         const verifyPassword = await bcrypt.compareSync(req.body.password, userData.password)
         if(!verifyPassword) return res.json({message: 'Password salah'})
-        const token = await jwt.sign({id: userData._id}, config.secret, {expiresIn: 86400})
+        const token = await jwt.sign({id: userData._id}, process.env.SECRET, {expiresIn: 86400})
         res.json({auth: true, token: token})
     } catch (error) {
         res.json({message: error})

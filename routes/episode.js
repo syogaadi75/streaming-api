@@ -5,11 +5,15 @@ const express = require('express')
 const router = express.Router()
 const multer = require('multer')
 const upload = require('../middleware/multer/upload')
+const path = require('node:path')
 
 router.get('/:filmId', async (req, res) => {
     try {
         var film = await Film.findById(req.params.filmId)
         var data = await Episode.find({id_film: req.params.filmId})
+        data.map((val, i) => {
+            return data[i].video = path.join(__dirname,'..','videos', val.video)
+        }) 
         res.send({
             film: film,
             episodes: data

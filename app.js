@@ -13,8 +13,8 @@ const episodeRoute = require('./routes/episode')
 const authRoute = require('./routes/auth')
 
 // Route
-app.use('/films', verifyToken, filmsRoute)
-app.use('/episode', verifyToken, episodeRoute)
+app.use('/films', filmsRoute)
+app.use('/episode', episodeRoute)
 app.use('/auth', authRoute)
 app.get('/', (req, res) => {
     res.send('Ouiiii')

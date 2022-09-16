@@ -6,6 +6,7 @@ const verifyToken = require('./middleware/verifyToken')
 require('dotenv/config')
 
 app.use(bodyParser.json())
+app.use(bodyParser.urlencoded())
 
 // Import Routes
 const filmsRoute = require('./routes/films')
@@ -17,15 +18,15 @@ app.use('/films', filmsRoute)
 app.use('/episode', episodeRoute)
 app.use('/auth', authRoute)
 app.get('/', (req, res) => {
-    res.send('Ouiiii')
-}) 
+    res.send('Hello')
+})
 
 // connect to db
-mongoose.connect(process.env.DB_CONNECTION,() => {
+mongoose.connect(process.env.DB_CONNECTION, () => {
     console.log('Berhasil tersambung ke Database')
 })
 
 // Start Server
-app.listen(process.env.PORT || 3000, function() {
-    console.log('Express server listening on port %d',  this.address().port)
+app.listen(process.env.PORT || 3000, function () {
+    console.log('Express server listening on port %d', this.address().port)
 })

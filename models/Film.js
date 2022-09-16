@@ -17,6 +17,10 @@ const FilmSchema = mongoose.Schema({
         type: Date,
         default: Date.now
     },
+    updated_at: {
+        type: Date,
+        default: Date.now
+    },
     episode: {
         type: Boolean,
         default: false,

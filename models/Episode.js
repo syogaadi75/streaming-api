@@ -1,5 +1,7 @@
 const mongoose = require('mongoose')
-const {Schema} = require('mongoose')
+const {
+    Schema
+} = require('mongoose')
 
 const EpisodeSchema = mongoose.Schema({
     id_film: {
@@ -13,7 +15,15 @@ const EpisodeSchema = mongoose.Schema({
     video: {
         type: String,
         requred: true
-    }, 
+    },
+    date: {
+        type: Date,
+        default: Date.now
+    },
+    updated_at: {
+        type: Date,
+        default: Date.now
+    },
 })
 
 module.exports = mongoose.model('Episodes', EpisodeSchema);

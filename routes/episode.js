@@ -51,10 +51,6 @@ router.post('/:filmId', async (req, res) => {
 router.delete('/:episodeId', async (req, res) => {
     try {
         var episode = await Episode.findById(req.params.episodeId)
-        if (episode.video) {
-            await fs.unlink("videos/" + episode.video)
-        }
-
         const removedEpisode = await episode.remove()
         res.send(removedEpisode)
     } catch (error) {

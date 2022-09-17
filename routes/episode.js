@@ -5,16 +5,12 @@ const express = require('express')
 const router = express.Router()
 const path = require('path')
 
-router.get('/:filmId', async (req, res) => {
+router.get('/:id', async (req, res) => {
     try {
-        var film = await Film.findById(req.params.filmId)
-        var data = await Episode.find({
-            id_film: req.params.filmId
+        var data = await Episode.findOne({
+            _id: req.params.id
         })
-        res.send({
-            film: film,
-            episodes: data
-        })
+        res.send(data)
     } catch (error) {
         res.send({
             message: error

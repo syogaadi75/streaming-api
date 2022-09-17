@@ -4,7 +4,8 @@ const router = express.Router();
 const Film = require('../models/Film')
 const upload = require('../middleware/multer/upload')
 const multer = require('multer')
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
+const Episode = require('../models/Episode');
 
 // Get
 router.get('/', async (req, res) => {

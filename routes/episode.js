@@ -22,15 +22,29 @@ router.get('/:filmId', async (req, res) => {
     }
 })
 
+router.get('/', async (req, res) => {
+    const films = await Episode.aggregate().lookup({
+        from: 'films',
+        localField: 'id_film',
+        foreignField: '_id',
+        as: 'film'
+    }).sort({
+        date: -1
+    })
+    res.send(films)
+})
+
 router.post('/:filmId', async (req, res) => {
     try {
         var dataFilm = await Episode.find({
             id_film: req.params.filmId
         })
 
+        var noEps = req.body.no ? req.body.no : dataFilm.length + 1
+
         const eps = new Episode({
             id_film: req.params.filmId,
-            no: dataFilm.length + 1,
+            no: noEps,
             video: req.body.video,
         })
 

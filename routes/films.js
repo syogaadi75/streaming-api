@@ -4,6 +4,7 @@ const router = express.Router();
 const Film = require('../models/Film')
 const upload = require('../middleware/multer/upload')
 const multer = require('multer')
+const mongoose = require('mongoose')
 
 // Get
 router.get('/', async (req, res) => {
@@ -20,8 +21,14 @@ router.get('/', async (req, res) => {
 // Get By Id
 router.get('/:filmId', async (req, res) => {
     try {
-        const specificFilm = await Film.findById(req.params.filmId)
-        res.send(specificFilm)
+        var film = await Film.findById(req.params.filmId)
+        var data = await Episode.find({
+            id_film: req.params.filmId
+        })
+        res.send({
+            film: film,
+            episodes: data
+        })
     } catch (error) {
         res.send({
             message: error
@@ -46,7 +53,7 @@ router.post('/', upload.fields([{
             poster: req.files.poster[0].filename,
             title: req.body.title,
             synopsis: req.body.synopsis,
-            episode: req.body.status,
+            type: req.body.type
         })
 
         try {

@@ -21,9 +21,9 @@ const FilmSchema = mongoose.Schema({
         type: Date,
         default: Date.now
     },
-    episode: {
-        type: Boolean,
-        default: false,
+    type: {
+        type: String,
+        default: 'episode'
     }
 })
 

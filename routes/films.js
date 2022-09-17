@@ -38,66 +38,47 @@ router.get('/:filmId', async (req, res) => {
 })
 
 // Insert
-router.post('/', upload.fields([{
-        name: 'poster',
-        maxCount: 1
-    }]),
-    async (req, res) => {
-        if (Object.keys(req.files).length === 0) {
-            res.send({
-                message: "File poster diperlukan"
-            });
-            return false;
-        }
+router.post('/', async (req, res) => {
+    const film = new Film({
+        title: req.body.title,
+        synopsis: req.body.synopsis,
+        poster: req.body.poster,
+        type: req.body.type
+    })
 
-        const film = new Film({
-            poster: req.files.poster[0].filename,
-            title: req.body.title,
-            synopsis: req.body.synopsis,
-            type: req.body.type
+    try {
+        const savedFilm = await film.save()
+        res.send(savedFilm)
+    } catch (error) {
+        res.send({
+            message: error
         })
-
-        try {
-            const savedFilm = await film.save()
-            res.send(savedFilm)
-        } catch (error) {
-            res.send({
-                message: error
-            })
-        }
     }
+}
 )
 
 // Update
-router.put('/:filmId', upload.fields([{
-        name: 'poster',
-        maxCount: 1
-    }]),
-    async (req, res) => {
-
-        var data = {
-            title: req.body.title,
-            synopsis: req.body.synopsis,
-            episode: req.body.status
-        }
-
-        if (Object.keys(req.files).length > 0) {
-            data.poster = req.files.poster[0].filename
-        }
-
-        try {
-            const updatedFilm = await Film.updateOne({
-                _id: req.params.filmId
-            }, {
-                $set: data
-            })
-            res.send(updatedFilm)
-        } catch (error) {
-            res.send({
-                message: error
-            })
-        }
+router.put('/:filmId', async (req, res) => {
+    var data = {
+        title: req.body.title,
+        synopsis: req.body.synopsis,
+        episode: req.body.status,
+        poster: req.body.poster
     }
+
+    try {
+        const updatedFilm = await Film.updateOne({
+            _id: req.params.filmId
+        }, {
+            $set: data
+        })
+        res.send(updatedFilm)
+    } catch (error) {
+        res.send({
+            message: error
+        })
+    }
+}
 )
 
 // Delete

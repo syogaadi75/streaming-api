@@ -7,10 +7,38 @@ const path = require('path')
 
 router.get('/:id', async (req, res) => {
     try {
-        var data = await Episode.findOne({
+        var episode = await Episode.findOne({
             _id: req.params.id
         })
-        res.send(data)
+        const film = await Film.findOne({ _id: episode.id_film })
+        res.send({
+            episode,
+            film: film
+        })
+    } catch (error) {
+        res.send({
+            message: error
+        })
+    }
+})
+
+router.get('/cariNo/:id_film/:no', async (req, res) => {
+    try {
+        var episode = await Episode.findOne({
+            id_film: req.params.id_film,
+            no: req.params.no
+        })
+
+        if (!episode) {
+            res.send({ episode: [], message: 'Episode tidak tersedia', error: true })
+            return false
+        }
+
+        const film = await Film.findOne({ _id: episode.id_film })
+        res.send({
+            episode,
+            film: film
+        })
     } catch (error) {
         res.send({
             message: error

@@ -25,7 +25,7 @@ router.get('/:filmId', async (req, res) => {
         var film = await Film.findById(req.params.filmId)
         var data = await Episode.find({
             id_film: req.params.filmId
-        })
+        }).sort({ no: 'desc' })
         res.send({
             film: film,
             episodes: data
@@ -43,7 +43,8 @@ router.post('/', async (req, res) => {
         title: req.body.title,
         synopsis: req.body.synopsis,
         poster: req.body.poster,
-        type: req.body.type
+        type: req.body.type,
+        category: req.body.category,
     })
 
     try {
@@ -63,7 +64,9 @@ router.put('/:filmId', async (req, res) => {
         title: req.body.title,
         synopsis: req.body.synopsis,
         episode: req.body.status,
-        poster: req.body.poster
+        poster: req.body.poster,
+        type: req.body.type,
+        category: req.body.category,
     }
 
     try {

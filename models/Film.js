@@ -24,6 +24,9 @@ const FilmSchema = mongoose.Schema({
     type: {
         type: String,
         default: 'episode'
+    },
+    category: {
+        type: Array
     }
 })
 

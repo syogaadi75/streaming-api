@@ -54,7 +54,7 @@ router.get('/', async (req, res) => {
         as: 'film'
     }).sort({
         date: -1
-    }).limit(96)
+    }).limit(56)
     res.send(films)
 })
 

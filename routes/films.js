@@ -10,7 +10,7 @@ const Episode = require('../models/Episode');
 // Get
 router.get('/', async (req, res) => {
     try {
-        const films = await Film.find()
+        const films = await Film.find().sort({ date: -1 })
         res.send(films)
     } catch (error) {
         res.send({

@@ -10,13 +10,24 @@ const Episode = require('../models/Episode');
 // Get
 router.get('/', async (req, res) => {
     try {
-        const films = await Film.find().sort({ date: -1 })
+        const films = await Film.aggregate().lookup({
+            from: 'episodes',
+            localField: '_id',
+            foreignField: 'id_film',
+            as: 'episode'
+        }).sort({ date: -1 })
         res.send(films)
     } catch (error) {
         res.send({
             message: error
         })
     }
+})
+
+// Cari judul
+router.get('/search/:title', async (req, res) => {
+    var film = await Film.find({ title: new RegExp('.*' + req.params.title + '.*') })
+    res.send(film)
 })
 
 // Get By Id

@@ -32,7 +32,7 @@ router.put('/:id', async (req, res) => {
         const cekHistory = await Histories.findOne({ $and: [{ _id: req.params.id }, { 'episodes._id': req.body.episode }] })
         if (!cekHistory) {
             const dataHistory = await Histories.findOne({ _id: req.params.id })
-            if (dataHistory.episodes.length >= 10) {
+            if (dataHistory.episodes.length >= 12) {
                 await Histories.updateOne({ _id: req.params.id }, { $pull: { episodes: { _id: dataHistory.episodes[0]._id } } })
             }
 

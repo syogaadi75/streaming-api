@@ -86,6 +86,23 @@ router.post('/:filmId', async (req, res) => {
     }
 })
 
+router.put('/:id', async (req, res) => {
+    try {
+        var data = {}
+        req.body.no ? data.no = req.body.no : ''
+        req.body.video ? data.video = req.body.video : ''
+
+        const updated = await Episode.updateOne({
+            _id: req.params.id
+        }, data)
+        res.send(updated)
+    } catch (error) {
+        res.send({
+            message: error
+        })
+    }
+})
+
 router.delete('/:episodeId', async (req, res) => {
     try {
         var episode = await Episode.findById(req.params.episodeId)

@@ -15,7 +15,7 @@ router.get('/', async (req, res) => {
             localField: '_id',
             foreignField: 'id_film',
             as: 'episode'
-        }).sort({ date: -1 })
+        }).sort({ no: -1 })
         res.send(films)
     } catch (error) {
         res.send({
@@ -26,7 +26,10 @@ router.get('/', async (req, res) => {
 
 // Cari judul
 router.get('/search/:title', async (req, res) => {
-    var film = await Film.find({ title: new RegExp('.*' + req.params.title + '.*') })
+    var string = req.params.title
+    var regex = new RegExp(/{}/)
+    string.replace(regex, '')
+    var film = await Film.find({ title: { $regex: string, $options: 'i' } })
     res.send(film)
 })
 

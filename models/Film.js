@@ -25,6 +25,10 @@ const FilmSchema = mongoose.Schema({
         type: String,
         default: 'episode'
     },
+    tamat: {
+        type: Boolean,
+        default: false
+    },
     category: {
         type: Array
     }

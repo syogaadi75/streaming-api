@@ -10,12 +10,29 @@ const Episode = require('../models/Episode');
 // Get
 router.get('/', async (req, res) => {
     try {
-        const films = await Film.aggregate().lookup({
-            from: 'episodes',
-            localField: '_id',
-            foreignField: 'id_film',
-            as: 'episode'
-        }).sort({ no: -1 })
+        const films = await Film.aggregate([
+            {
+                $lookup: {
+                    from: 'episodes',
+                    localField: '_id',
+                    foreignField: 'id_film',
+                    as: 'episode'
+                }
+            },
+            {
+                $project: {
+                    _id: '$_id',
+                    poster: '$poster',
+                    title: '$title',
+                    synopsis: '$synopsis',
+                    type: '$type',
+                    category: '$category',
+                    date: '$date',
+                    updated_at: '$updated_at',
+                    episodeCount: { $size: '$episode' }
+                }
+            }
+        ]).sort({ date: -1 })
         res.send(films)
     } catch (error) {
         res.send({
@@ -31,6 +48,22 @@ router.get('/search/:title', async (req, res) => {
     string.replace(regex, '')
     var film = await Film.find({ title: { $regex: string, $options: 'i' } })
     res.send(film)
+})
+
+// Cari judul
+router.get('/jadwal', async (req, res) => {
+    try {
+        var start = new Date();
+        start.setDate(start.getDate() - 7)
+        start.setHours(0, 0, 0, 0)
+        var end = new Date();
+        end.setHours(23, 59, 59, 999)
+
+        const film = await Film.find({ updated_at: { $gte: start, $lt: end }, tamat: { $ne: true } })
+        res.send({ film })
+    } catch (error) {
+        res.send({ message: error })
+    }
 })
 
 // Get By Id

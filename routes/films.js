@@ -22,6 +22,7 @@ router.get('/', async (req, res) => {
             {
                 $project: {
                     _id: '$_id',
+                    tamat: '$tamat',
                     poster: '$poster',
                     title: '$title',
                     synopsis: '$synopsis',

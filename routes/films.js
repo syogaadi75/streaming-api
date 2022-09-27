@@ -93,6 +93,7 @@ router.post('/', async (req, res) => {
         poster: req.body.poster,
         type: req.body.type,
         category: req.body.category,
+        tamat: req.body.tamat,
     })
 
     try {

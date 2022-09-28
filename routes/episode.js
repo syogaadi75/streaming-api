@@ -70,6 +70,7 @@ router.post('/:filmId', async (req, res) => {
             id_film: req.params.filmId,
             no: noEps,
             video: req.body.video,
+            date: req.body.date
         })
 
         const savedEpisode = await eps.save()
@@ -91,6 +92,7 @@ router.put('/:id', async (req, res) => {
         var data = {}
         req.body.no ? data.no = req.body.no : ''
         req.body.video ? data.video = req.body.video : ''
+        req.body.date ? data.date = req.body.date : ''
 
         const updated = await Episode.updateOne({
             _id: req.params.id

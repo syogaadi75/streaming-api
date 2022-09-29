@@ -94,6 +94,7 @@ router.post('/', async (req, res) => {
         type: req.body.type,
         category: req.body.category,
         tamat: req.body.tamat,
+        date: req.body.date,
     })
 
     try {

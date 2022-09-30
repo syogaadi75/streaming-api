@@ -58,7 +58,7 @@ router.get('/jadwal', async (req, res) => {
         start.setDate(start.getDate() - 7)
         start.setHours(23, 59, 59, 999)
         var end = new Date();
-        end.setHours(0, 0, 0, 0)
+        end.setHours(23, 59, 59, 999)
 
         const film = await Film.find({ updated_at: { $gte: start, $lt: end }, tamat: { $ne: true } })
         res.send({ film })

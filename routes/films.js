@@ -10,8 +10,7 @@ const Episode = require('../models/Episode');
 // Get
 router.get('/', async (req, res) => {
     try {
-        const films = await Film.aggregate([
-            {
+        const films = await Film.aggregate([{
                 $lookup: {
                     from: 'episodes',
                     localField: '_id',
@@ -30,10 +29,14 @@ router.get('/', async (req, res) => {
                     category: '$category',
                     date: '$date',
                     updated_at: '$updated_at',
-                    episodeCount: { $size: '$episode' }
+                    episodeCount: {
+                        $size: '$episode'
+                    }
                 }
             }
-        ]).sort({ date: -1 })
+        ]).sort({
+            date: -1
+        })
         res.send(films)
     } catch (error) {
         res.send({
@@ -47,7 +50,12 @@ router.get('/search/:title', async (req, res) => {
     var string = req.params.title
     var regex = new RegExp(/{}/)
     string.replace(regex, '')
-    var film = await Film.find({ title: { $regex: string, $options: 'i' } })
+    var film = await Film.find({
+        title: {
+            $regex: string,
+            $options: 'i'
+        }
+    })
     res.send(film)
 })
 
@@ -60,10 +68,22 @@ router.get('/jadwal', async (req, res) => {
         var end = new Date();
         end.setHours(23, 59, 59, 999)
 
-        const film = await Film.find({ updated_at: { $gte: start, $lt: end }, tamat: { $ne: true } })
-        res.send({ film })
+        const film = await Film.find({
+            updated_at: {
+                $gte: start,
+                $lt: end
+            },
+            tamat: {
+                $ne: true
+            }
+        })
+        res.send({
+            film
+        })
     } catch (error) {
-        res.send({ message: error })
+        res.send({
+            message: error
+        })
     }
 })
 
@@ -73,7 +93,9 @@ router.get('/:filmId', async (req, res) => {
         var film = await Film.findById(req.params.filmId)
         var data = await Episode.find({
             id_film: req.params.filmId
-        }).sort({ no: 'desc' })
+        }).sort({
+            no: 'desc'
+        })
         res.send({
             film: film,
             episodes: data
@@ -105,8 +127,7 @@ router.post('/', async (req, res) => {
             message: error
         })
     }
-}
-)
+})
 
 // Update
 router.put('/:filmId', async (req, res) => {
@@ -133,17 +154,13 @@ router.put('/:filmId', async (req, res) => {
             message: error
         })
     }
-}
-)
+})
 
 // Delete
 router.delete('/:filmId', async (req, res) => {
 
     try {
         var film = await Film.findById(req.params.filmId)
-        if (film.poster) {
-            await fs.unlink("images/poster/" + film.poster)
-        }
 
         const filmRemoved = await film.remove()
         res.send({

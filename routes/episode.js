@@ -10,7 +10,9 @@ router.get('/:id', async (req, res) => {
         var episode = await Episode.findOne({
             _id: req.params.id
         })
-        const film = await Film.findOne({ _id: episode.id_film })
+        const film = await Film.findOne({
+            _id: episode.id_film
+        })
         res.send({
             episode,
             film: film
@@ -30,11 +32,17 @@ router.get('/cariNo/:id_film/:no', async (req, res) => {
         })
 
         if (!episode) {
-            res.send({ episode: [], message: 'Episode tidak tersedia', error: true })
+            res.send({
+                episode: [],
+                message: 'Episode tidak tersedia',
+                error: true
+            })
             return false
         }
 
-        const film = await Film.findOne({ _id: episode.id_film })
+        const film = await Film.findOne({
+            _id: episode.id_film
+        })
         res.send({
             episode,
             film: film
@@ -66,12 +74,16 @@ router.post('/:filmId', async (req, res) => {
 
         var noEps = req.body.no ? req.body.no : dataFilm.length + 1
 
-        const eps = new Episode({
+        var newEps = {
             id_film: req.params.filmId,
             no: noEps,
             video: req.body.video,
             date: req.body.date
-        })
+        }
+
+        req.body.bvideo ? newEps.bvideo = req.body.bvideo : ''
+
+        const eps = new Episode(newEps)
 
         const savedEpisode = await eps.save()
         const updated = await Film.updateOne({
@@ -92,6 +104,7 @@ router.put('/:id', async (req, res) => {
         var data = {}
         req.body.no ? data.no = req.body.no : ''
         req.body.video ? data.video = req.body.video : ''
+        req.body.bvideo ? data.bvideo = req.body.bvideo : ''
         req.body.date ? data.date = req.body.date : ''
 
         const updated = await Episode.updateOne({

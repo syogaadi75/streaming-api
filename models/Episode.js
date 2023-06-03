@@ -16,6 +16,10 @@ const EpisodeSchema = mongoose.Schema({
         type: String,
         requred: true
     },
+    bvideo: {
+        type: String,
+        requred: true
+    },
     date: {
         type: Date,
         default: Date.now

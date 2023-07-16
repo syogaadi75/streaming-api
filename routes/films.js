@@ -6,6 +6,7 @@ const upload = require('../middleware/multer/upload')
 const multer = require('multer')
 const mongoose = require('mongoose');
 const Episode = require('../models/Episode');
+const verifyToken = require('../middleware/verifyToken');
 
 // Get
 router.get('/', async (req, res) => {
@@ -108,7 +109,7 @@ router.get('/:filmId', async (req, res) => {
 })
 
 // Insert
-router.post('/', async (req, res) => {
+router.post('/', verifyToken, async (req, res) => {
     const film = new Film({
         title: req.body.title,
         synopsis: req.body.synopsis,
@@ -130,7 +131,7 @@ router.post('/', async (req, res) => {
 })
 
 // Update
-router.put('/:filmId', async (req, res) => {
+router.put('/:filmId', verifyToken, async (req, res) => {
     var data = {
         title: req.body.title,
         synopsis: req.body.synopsis,
@@ -157,7 +158,7 @@ router.put('/:filmId', async (req, res) => {
 })
 
 // Delete
-router.delete('/:filmId', async (req, res) => {
+router.delete('/:filmId', verifyToken, async (req, res) => {
 
     try {
         var film = await Film.findById(req.params.filmId)

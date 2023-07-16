@@ -22,7 +22,7 @@ app.use('/episode', episodeRoute)
 app.use('/auth', authRoute)
 app.use('/histories', historiesRoute)
 app.get('/', (req, res) => {
-    res.send('Hello')
+    res.send('Selamat Datang!')
 })
 
 // connect to db

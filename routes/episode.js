@@ -130,6 +130,21 @@ router.delete('/:episodeId', async (req, res) => {
     }
 })
 
+router.delete('/delete-episodes/:idFilm', async (req, res) => {
+    try {
+        const idFilm = req.params.idFilm;
+        const result = await Episode.deleteMany({
+            id_film: idFilm
+        });
+        res.send(`Berhasil menghapus ${result.deletedCount} episode.`);
+    } catch (error) {
+        res.send({
+            message: 'Terjadi kesalahan',
+            error: error.message
+        });
+    }
+});
+
 router.get('/getVideo/:episodeId', async (req, res) => {
     try {
         var data = await Episode.findById(req.params.episodeId)

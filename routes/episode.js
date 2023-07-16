@@ -4,6 +4,7 @@ const fs = require('node:fs/promises')
 const express = require('express')
 const router = express.Router()
 const path = require('path')
+const verifyToken = require('../middleware/verifyToken')
 
 router.get('/:id', async (req, res) => {
     try {
@@ -66,7 +67,7 @@ router.get('/', async (req, res) => {
     res.send(films)
 })
 
-router.post('/:filmId', async (req, res) => {
+router.post('/:filmId', verifyToken, async (req, res) => {
     try {
         var dataFilm = await Episode.find({
             id_film: req.params.filmId
@@ -99,7 +100,7 @@ router.post('/:filmId', async (req, res) => {
     }
 })
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', verifyToken, async (req, res) => {
     try {
         var data = {}
         req.body.no ? data.no = req.body.no : ''
@@ -118,7 +119,7 @@ router.put('/:id', async (req, res) => {
     }
 })
 
-router.delete('/:episodeId', async (req, res) => {
+router.delete('/:episodeId', verifyToken, async (req, res) => {
     try {
         var episode = await Episode.findById(req.params.episodeId)
         const removedEpisode = await episode.remove()
@@ -130,7 +131,7 @@ router.delete('/:episodeId', async (req, res) => {
     }
 })
 
-router.delete('/delete-episodes/:idFilm', async (req, res) => {
+router.delete('/delete-episodes/:idFilm', verifyToken, async (req, res) => {
     try {
         const idFilm = req.params.idFilm;
         const result = await Episode.deleteMany({

@@ -10,6 +10,20 @@ app.use(cors())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded())
 
+const restrictAccess = (req, res, next) => {
+    const allowedOrigins = ['https://animey.vercel.app', 'https://admin-animey.vercel.app'];
+
+    const origin = req.headers.origin;
+    if (allowedOrigins.includes(origin)) {
+        res.setHeader('Access-Control-Allow-Origin', origin);
+        next();
+    } else {
+        res.status(403).json({
+            error: 'Akses ditolak'
+        });
+    }
+};
+
 // Import Routes
 const filmsRoute = require('./routes/films')
 const episodeRoute = require('./routes/episode')
@@ -17,10 +31,10 @@ const authRoute = require('./routes/auth')
 const historiesRoute = require('./routes/histories')
 
 // Route
-app.use('/films', filmsRoute)
-app.use('/episode', episodeRoute)
-app.use('/auth', authRoute)
-app.use('/histories', historiesRoute)
+app.use('/films', restrictAccess, filmsRoute)
+app.use('/episode', restrictAccess, episodeRoute)
+app.use('/auth', restrictAccess, authRoute)
+app.use('/histories', restrictAccess, historiesRoute)
 app.get('/', (req, res) => {
     res.send('Selamat Datang!')
 })

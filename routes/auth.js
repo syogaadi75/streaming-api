@@ -54,10 +54,11 @@ router.post('/login', async (req, res) => {
         if (!verifyPassword) return res.send({
             message: 'Password salah'
         })
+        var exp = 7 * 24 * 60 * 60;
         const token = await jwt.sign({
             id: userData._id
         }, process.env.SECRET, {
-            expiresIn: 86400
+            expiresIn: exp
         })
         res.send({
             auth: true,

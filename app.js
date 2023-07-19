@@ -31,28 +31,12 @@ const authRoute = require('./routes/auth')
 const historiesRoute = require('./routes/histories')
 
 // Route
-app.use('/films', filmsRoute)
-app.use('/episode', episodeRoute)
-app.use('/auth', authRoute)
-app.use('/histories', historiesRoute)
+app.use('/films', restrictAccess, filmsRoute)
+app.use('/episode', restrictAccess, episodeRoute)
+app.use('/auth', restrictAccess, authRoute)
+app.use('/histories', restrictAccess, historiesRoute)
 app.get('/', (req, res) => {
     res.send('Selamat Datang!')
-})
-app.post('updateeps', async (req, res) => {
-    try {
-        var data = {}
-        req.body.bvideo ? data.bvideo = req.body.bvideo : ''
-
-        const updated = await Episode.updateOne({
-            id_film: data.id_film,
-            no: data.no
-        }, data)
-        res.send(updated)
-    } catch (error) {
-        res.send({
-            message: error
-        })
-    }
 })
 
 // connect to db

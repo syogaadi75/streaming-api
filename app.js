@@ -11,7 +11,7 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded())
 
 const restrictAccess = (req, res, next) => {
-    const allowedOrigins = ['https://animey.vercel.app', 'https://admin-animey.vercel.app', 'http://1131movie.com', 'https://1131movie.com'];
+    const allowedOrigins = ['https://animey.vercel.app', 'https://admin-animey.vercel.app'];
 
     const origin = req.headers.origin;
     if (allowedOrigins.includes(origin)) {
@@ -31,10 +31,10 @@ const authRoute = require('./routes/auth')
 const historiesRoute = require('./routes/histories')
 
 // Route
-app.use('/films', restrictAccess, filmsRoute)
-app.use('/episode', restrictAccess, episodeRoute)
-app.use('/auth', restrictAccess, authRoute)
-app.use('/histories', restrictAccess, historiesRoute)
+app.use('/films', filmsRoute)
+app.use('/episode', episodeRoute)
+app.use('/auth', authRoute)
+app.use('/histories', historiesRoute)
 app.get('/', (req, res) => {
     res.send('Selamat Datang!')
 })

@@ -31,10 +31,10 @@ const authRoute = require('./routes/auth')
 const historiesRoute = require('./routes/histories')
 
 // Route
-app.use('/films', filmsRoute)
-app.use('/episode', episodeRoute)
-app.use('/auth', authRoute)
-app.use('/histories', historiesRoute)
+app.use('/films', restrictAccess, filmsRoute)
+app.use('/episode', restrictAccess, episodeRoute)
+app.use('/auth', restrictAccess, authRoute)
+app.use('/histories', restrictAccess, historiesRoute)
 app.get('/', (req, res) => {
     res.send('Selamat Datang!')
 })
